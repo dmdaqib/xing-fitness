@@ -3,9 +3,9 @@
  * Directly sourced from official Xing Fitness offer creatives.
  *
  * 1. 30% OFF Annual Membership
- * 2. Up to 40% OFF Couples Annual Membership
+ * 2. Up to 40% OFF Annual Membership — Couples Offer
  * 3. 20% OFF Personal Training
- * 4. ₹1,999 Body Workouts & HIIT Classes — 12 Sessions
+ * 4. ₹1,999 — Body Workouts & HIIT Classes — 12 Sessions
  */
 
 export interface VerifiedOffer {
@@ -19,7 +19,7 @@ export interface VerifiedOffer {
   whatsappMessage: string;
   callAction: string;
   altText: string;
-  description?: string;
+  description: string;
 }
 
 export const VERIFIED_OFFERS: VerifiedOffer[] = [
@@ -38,10 +38,11 @@ export const VERIFIED_OFFERS: VerifiedOffer[] = [
   },
   {
     id: 'offer-couples-40',
-    title: 'Up to 40% OFF Couples Annual Membership',
+    title: 'Up to 40% OFF Annual Membership — Couples Offer',
     badge: 'UP TO 40% OFF',
     discount: 'UP TO 40% OFF',
     highlightText: 'Couples Offer — Up to 40% Off on Annual Membership',
+    description: 'Partner up and save with our special couples annual membership covering full club access, Matrix machinery, and group studio classes in Brookefield.',
     posterImage: '/images/offers/offer-couples-40.png',
     enquiryValue: 'Up to 40% OFF Couples Annual Membership',
     whatsappMessage: 'Hi Xing Fitness, I am interested in the Up to 40% Off Couples Annual Membership offer. Please share the details.',
@@ -54,6 +55,7 @@ export const VERIFIED_OFFERS: VerifiedOffer[] = [
     badge: '20% OFF',
     discount: '20% OFF',
     highlightText: 'Personal Training — Flat 20% Off',
+    description: 'Dedicated 1-on-1 coaching, tailored workout splits, biomechanical movement correction, and nutritional accountability with certified trainers.',
     posterImage: '/images/offers/offer-pt-20.png',
     enquiryValue: '20% OFF Personal Training',
     whatsappMessage: 'Hi Xing Fitness, I am interested in the 20% Off Personal Training offer. Please share the details.',
@@ -62,10 +64,11 @@ export const VERIFIED_OFFERS: VerifiedOffer[] = [
   },
   {
     id: 'offer-hiit-1999',
-    title: '₹1,999 Body Workouts & HIIT Classes — 12 Sessions',
+    title: '₹1,999 — Body Workouts & HIIT Classes — 12 Sessions',
     badge: '₹1,999 ONLY',
     discount: '₹1,999 ONLY',
     highlightText: 'Body Workouts & HIIT Classes — 12 Sessions @ ₹1,999 Only',
+    description: '12 high-energy HIIT and full body conditioning studio sessions designed to build functional cardiovascular stamina and burn fat.',
     posterImage: '/images/offers/offer-hiit-1999.png',
     enquiryValue: '12 HIIT Sessions for ₹1,999',
     whatsappMessage: 'Hi Xing Fitness, I am interested in the 12 HIIT Sessions for ₹1,999 offer. Please share the details.',

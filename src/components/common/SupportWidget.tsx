@@ -585,8 +585,12 @@ export const SupportWidget: React.FC<SupportWidgetProps> = ({
             {/* Header */}
             <div className="px-4 py-3 bg-[#141923] border-b border-white/10 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1C212D] to-[#12151B] border border-[#D4AF37]/50 flex items-center justify-center font-extrabold text-[#D4AF37] text-sm shadow-md">
-                  X
+                <div className="w-9 h-9 rounded-xl bg-black/70 border border-[#D4AF37]/50 flex items-center justify-center p-1 shadow-md shrink-0">
+                  <img
+                    src="/images/branding/xing-fitness-logo.png"
+                    alt="Xing Fitness"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">

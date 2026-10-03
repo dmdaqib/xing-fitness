@@ -39,13 +39,18 @@ export const BlogPreview: React.FC = () => {
               className="rounded-3xl bg-[#14161D] border border-white/10 hover:border-[#D4AF37]/40 transition-all flex flex-col justify-between overflow-hidden group shadow-xl"
             >
               <div>
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#090A0D]">
+                  <picture>
+                    <source srcSet={post.image} type="image/webp" />
+                    <img
+                      src={post.imageJpg || post.image}
+                      alt={post.imageAlt}
+                      width={post.imageWidth || 1200}
+                      height={post.imageHeight || 750}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </picture>
                   <div className="absolute top-3 left-3">
                     <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[#D4AF37] text-[10px] font-bold uppercase tracking-wider border border-white/15">
                       {post.category}

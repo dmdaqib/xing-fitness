@@ -19,6 +19,8 @@ interface TrainingZone {
   id: string;
   name: string;
   category: string;
+  tabLabel: string;
+  shortLabel: string;
   description: string;
   image: string;
   alt: string;
@@ -32,6 +34,8 @@ export const WhyChoosePreview: React.FC = () => {
       id: 'cardio',
       name: 'Cardio Deck',
       category: 'Cardio',
+      tabLabel: 'Cardio',
+      shortLabel: 'Cardio',
       description: 'Commercial treadmills, stationary bikes, and ellipticals facing wide panoramic windows.',
       image: '/images/real/cardio/xing-fitness-cardio-zone-treadmills-md.webp',
       alt: 'Dedicated Cardio zone with commercial Matrix treadmills at Xing Fitness'
@@ -39,7 +43,9 @@ export const WhyChoosePreview: React.FC = () => {
     {
       id: 'strength',
       name: 'Strength Floor',
-      category: 'Weight / Strength Training',
+      category: 'Weight & Strength Training',
+      tabLabel: 'Strength & Weights',
+      shortLabel: 'Strength',
       description: 'Full dumbbell racks up to 40kg, Olympic benches, dual cable towers, and selectorized stations.',
       image: '/images/real/training-floor/xing-fitness-dumbbell-benches-training-md.webp',
       alt: 'Dedicated Weight and Strength training area at Xing Fitness'
@@ -47,7 +53,9 @@ export const WhyChoosePreview: React.FC = () => {
     {
       id: 'studio',
       name: 'Group Studio',
-      category: 'Group Classes',
+      category: 'Group Classes & Studio',
+      tabLabel: 'Group Classes',
+      shortLabel: 'Classes',
       description: 'Spacious hardwood-feel studio equipped for Zumba, HIIT, Yoga, and group conditioning.',
       image: '/images/real/group-studio/xing-fitness-aerobic-dance-studio-purple-md.webp',
       alt: 'Dedicated Group Classes aerobic studio at Xing Fitness'
@@ -160,7 +168,7 @@ export const WhyChoosePreview: React.FC = () => {
               {/* Visual Zone Switcher / Real Gym Photographs Showcase */}
               <div className="mt-4">
                 {/* Zone Tabs */}
-                <div className="grid grid-cols-3 gap-2 p-1 bg-black/50 rounded-2xl border border-white/10 mb-4">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 bg-black/60 rounded-2xl border border-white/10 mb-4">
                   {zones.map((zone) => {
                     const isSelected = zone.id === activeZoneId;
                     return (
@@ -168,16 +176,19 @@ export const WhyChoosePreview: React.FC = () => {
                         key={zone.id}
                         type="button"
                         onClick={() => setActiveZoneId(zone.id)}
-                        className={`py-2 px-2 sm:px-3 rounded-xl text-center text-xs font-bold transition-all cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 ${
+                        className={`py-2 px-1.5 sm:px-3 rounded-xl text-center transition-all cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 min-w-0 w-full overflow-hidden ${
                           isSelected
-                            ? 'bg-[#D4AF37] text-black shadow-md'
-                            : 'text-[#94A3B8] hover:text-white hover:bg-white/5'
+                            ? 'bg-[#D4AF37] text-black shadow-md font-bold'
+                            : 'text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium'
                         }`}
                       >
-                        {zone.id === 'cardio' && <HeartPulse className="w-3.5 h-3.5 shrink-0" />}
-                        {zone.id === 'strength' && <Dumbbell className="w-3.5 h-3.5 shrink-0" />}
-                        {zone.id === 'studio' && <Users className="w-3.5 h-3.5 shrink-0" />}
-                        <span className="truncate">{zone.category}</span>
+                        {zone.id === 'cardio' && <HeartPulse className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
+                        {zone.id === 'strength' && <Dumbbell className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
+                        {zone.id === 'studio' && <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
+                        <span className="text-[11px] sm:text-xs tracking-tight truncate max-w-full">
+                          <span className="sm:hidden">{zone.shortLabel}</span>
+                          <span className="hidden sm:inline">{zone.tabLabel}</span>
+                        </span>
                       </button>
                     );
                   })}
@@ -199,14 +210,14 @@ export const WhyChoosePreview: React.FC = () => {
                         Dedicated Space: {activeZone.category}
                       </span>
                       <p className="text-xs sm:text-sm font-semibold text-white">
-                        {activeZone.name} &mdash; <span className="text-white/80 font-normal">{activeZone.description}</span>
+                        {activeZone.name} &mdash; <span className="text-white/80 font-normal line-clamp-2 sm:line-clamp-none">{activeZone.description}</span>
                       </p>
                     </div>
                   </div>
                 </div>
 
                 {/* 3 Zone Thumbnails Preview Row */}
-                <div className="grid grid-cols-3 gap-3 mt-3">
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-3">
                   {zones.map((z) => (
                     <button
                       key={`thumb-${z.id}`}
@@ -226,8 +237,8 @@ export const WhyChoosePreview: React.FC = () => {
                       />
                       <div className="absolute inset-0 bg-black/50" />
                       <div className="absolute inset-0 p-1.5 sm:p-2 flex flex-col justify-end">
-                        <span className="text-[10px] sm:text-xs font-bold text-white leading-tight">
-                          {z.category}
+                        <span className="text-[10px] sm:text-xs font-bold text-white leading-tight truncate">
+                          {z.name}
                         </span>
                       </div>
                     </button>

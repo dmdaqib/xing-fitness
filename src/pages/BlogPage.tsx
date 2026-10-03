@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Clock,
   ChevronRight,
@@ -17,6 +17,8 @@ interface BlogPageProps {
 
 export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} }) => {
   const { slug } = useParams<{ slug?: string }>();
+  const navigate = useNavigate();
+
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(() => {
     if (slug) {
       return BLOG_POSTS.find((p) => p.slug === slug) || null;
@@ -26,6 +28,82 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Sync state when route slug changes
+  useEffect(() => {
+    if (slug) {
+      const match = BLOG_POSTS.find((p) => p.slug === slug);
+      if (match) {
+        setSelectedPost(match);
+      }
+    } else {
+      setSelectedPost(null);
+    }
+  }, [slug]);
+
+  // SEO document title and structured BlogPosting schema
+  useEffect(() => {
+    if (selectedPost) {
+      document.title = `${selectedPost.title} | Xing Fitness Knowledge Hub`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', selectedPost.summary);
+      }
+
+      const scriptId = 'blog-jsonld-schema';
+      let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+      if (!script) {
+        script = document.createElement('script');
+        script.id = scriptId;
+        script.type = 'application/ld+json';
+        document.head.appendChild(script);
+      }
+      script.text = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': selectedPost.title,
+        'description': selectedPost.summary,
+        'image': `https://xingfitness.com${selectedPost.image}`,
+        'datePublished': '2026-09-01T00:00:00+05:30',
+        'dateModified': '2026-10-01T00:00:00+05:30',
+        'author': {
+          '@type': 'Organization',
+          'name': 'Xing Fitness Club Coaching Team',
+          'url': 'https://xingfitness.com'
+        },
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'Xing Fitness Club',
+          'logo': {
+            '@type': 'ImageObject',
+            'url': 'https://xingfitness.com/images/branding/xing-fitness-logo.png'
+          }
+        },
+        'mainEntityOfPage': {
+          '@type': 'WebPage',
+          '@id': `https://xingfitness.com/blog/${selectedPost.slug}`
+        }
+      });
+    } else {
+      document.title = 'Fitness & Training Knowledge Hub | Xing Fitness Whitefield';
+      const script = document.getElementById('blog-jsonld-schema');
+      if (script) {
+        script.remove();
+      }
+    }
+  }, [selectedPost]);
+
+  const handleSelectPost = (post: BlogPost) => {
+    setSelectedPost(post);
+    navigate(`/blog/${post.slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleBackToAll = () => {
+    setSelectedPost(null);
+    navigate('/blog');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const categories = [
     'All',
@@ -66,19 +144,40 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
           <article className="max-w-3xl mx-auto animate-in fade-in duration-200">
             <button
               type="button"
-              onClick={() => setSelectedPost(null)}
-              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#D4AF37] hover:underline mb-8"
+              onClick={handleBackToAll}
+              className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#D4AF37] hover:underline mb-8 cursor-pointer"
             >
               ← Back to All Articles
             </button>
 
-            <div className="rounded-3xl overflow-hidden aspect-[16/9] mb-8 border border-white/10 shadow-2xl">
-              <img
-                src={selectedPost.image}
-                alt={selectedPost.title}
-                className="w-full h-full object-cover"
-              />
+            {/* Featured Hero Article Image with SEO responsive picture markup */}
+            <div className="rounded-3xl overflow-hidden aspect-[16/10] mb-3 border border-white/10 shadow-2xl bg-[#14161D]">
+              <picture>
+                <source srcSet={selectedPost.image} type="image/webp" />
+                <img
+                  src={selectedPost.imageJpg || selectedPost.image}
+                  alt={selectedPost.imageAlt}
+                  width={selectedPost.imageWidth || 1200}
+                  height={selectedPost.imageHeight || 750}
+                  loading="eager"
+                  fetchPriority="high"
+                  className="w-full h-full object-cover"
+                />
+              </picture>
             </div>
+
+            {/* Subtle photographic attribution & license transparency */}
+            {selectedPost.imageSource && (
+              <div className="flex flex-wrap items-center justify-between text-[11px] text-[#94A3B8] mb-8 px-1 gap-2 border-b border-white/5 pb-2">
+                <span className="italic">
+                  Visual subject: {selectedPost.imageAlt}
+                </span>
+                <span className="text-gray-400">
+                  {selectedPost.imagePhotographer ? `Photo by ${selectedPost.imagePhotographer} • ` : ''}
+                  {selectedPost.imageLicense}
+                </span>
+              </div>
+            )}
 
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <span className="px-3 py-1 rounded-full bg-[#D4AF37]/10 text-[#D4AF37] text-xs font-bold uppercase tracking-wider border border-[#D4AF37]/20">
@@ -152,15 +251,15 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
                 <button
                   type="button"
                   onClick={() => onOpenTrialModal(selectedPost.title)}
-                  className="px-6 py-3 rounded-full bg-[#D4AF37] text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-[#C5A028] transition-all shadow-lg shadow-[#D4AF37]/20 flex items-center gap-2"
+                  className="px-6 py-3 rounded-full bg-[#D4AF37] text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-[#C5A028] transition-all shadow-lg shadow-[#D4AF37]/20 flex items-center gap-2 cursor-pointer"
                 >
                   <span>Book Free Trial Pass</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => setSelectedPost(null)}
-                  className="px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white font-display font-bold text-xs uppercase tracking-wider border border-white/10 transition-all"
+                  onClick={handleBackToAll}
+                  className="px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white font-display font-bold text-xs uppercase tracking-wider border border-white/10 transition-all cursor-pointer"
                 >
                   View More Articles
                 </button>
@@ -214,7 +313,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
                     key={cat}
                     type="button"
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap ${
+                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
                       selectedCategory === cat
                         ? 'bg-[#D4AF37] text-black shadow-md shadow-[#D4AF37]/20'
                         : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10 hover:border-white/20'
@@ -229,13 +328,18 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
             {/* Featured Article Hero (When no search active) */}
             {!searchQuery && selectedCategory === 'All' && featuredPost && (
               <div className="mb-16 rounded-3xl bg-[#14161D] border border-[#D4AF37]/30 overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-0 group">
-                <div className="lg:col-span-7 relative aspect-[16/10] overflow-hidden">
-                  <img
-                    src={featuredPost.image}
-                    alt={featuredPost.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                <div className="lg:col-span-7 relative aspect-[16/10] overflow-hidden bg-[#090A0D]">
+                  <picture>
+                    <source srcSet={featuredPost.image} type="image/webp" />
+                    <img
+                      src={featuredPost.imageJpg || featuredPost.image}
+                      alt={featuredPost.imageAlt}
+                      width={featuredPost.imageWidth || 1200}
+                      height={featuredPost.imageHeight || 750}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </picture>
                   <div className="absolute top-4 left-4">
                     <span className="px-3.5 py-1.5 rounded-full bg-[#D4AF37] text-black text-xs font-black uppercase tracking-wider shadow-lg">
                       Featured Guide
@@ -262,8 +366,8 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
 
                   <button
                     type="button"
-                    onClick={() => setSelectedPost(featuredPost)}
-                    className="w-full sm:w-auto self-start px-6 py-3.5 rounded-full bg-[#D4AF37] text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-[#C5A028] transition-all shadow-lg shadow-[#D4AF37]/20 flex items-center justify-center gap-2"
+                    onClick={() => handleSelectPost(featuredPost)}
+                    className="w-full sm:w-auto self-start px-6 py-3.5 rounded-full bg-[#D4AF37] text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-[#C5A028] transition-all shadow-lg shadow-[#D4AF37]/20 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Read Full Guide</span>
                     <ArrowRight className="w-4 h-4" />
@@ -280,13 +384,18 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
                   className="rounded-3xl bg-[#14161D] border border-white/10 hover:border-[#D4AF37]/40 transition-all flex flex-col justify-between overflow-hidden group shadow-xl"
                 >
                   <div>
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
+                    <div className="relative aspect-[16/10] overflow-hidden bg-[#090A0D]">
+                      <picture>
+                        <source srcSet={post.image} type="image/webp" />
+                        <img
+                          src={post.imageJpg || post.image}
+                          alt={post.imageAlt}
+                          width={post.imageWidth || 1200}
+                          height={post.imageHeight || 750}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      </picture>
                       <div className="absolute top-3 left-3">
                         <span className="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[#D4AF37] text-[10px] font-bold uppercase tracking-wider border border-white/15">
                           {post.category}
@@ -315,8 +424,8 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
                   <div className="p-6 pt-0 border-t border-white/5">
                     <button
                       type="button"
-                      onClick={() => setSelectedPost(post)}
-                      className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-[#D4AF37] hover:text-black border border-white/10 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
+                      onClick={() => handleSelectPost(post)}
+                      className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-[#D4AF37] hover:text-black border border-white/10 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <span>Read Article</span>
                       <ChevronRight className="w-4 h-4" />
@@ -341,7 +450,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onOpenTrialModal = () => {} 
                     setSelectedCategory('All');
                     setSearchQuery('');
                   }}
-                  className="px-5 py-2.5 rounded-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-wider"
+                  className="px-5 py-2.5 rounded-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-wider cursor-pointer"
                 >
                   Reset Filters
                 </button>

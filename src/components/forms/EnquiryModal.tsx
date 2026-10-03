@@ -202,8 +202,10 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                   <optgroup label="Current Verified Offers">
                     <option value="30% OFF Annual Membership">30% OFF Annual Membership</option>
                     <option value="Up to 40% OFF Couples Annual Membership">Up to 40% OFF Couples Annual Membership</option>
+                    <option value="Up to 40% OFF Annual Membership — Couples Offer">Up to 40% OFF Annual Membership — Couples Offer</option>
                     <option value="20% OFF Personal Training">20% OFF Personal Training</option>
                     <option value="12 HIIT Sessions for ₹1,999">12 HIIT Sessions for ₹1,999</option>
+                    <option value="₹1,999 — Body Workouts & HIIT Classes — 12 Sessions">₹1,999 — Body Workouts & HIIT Classes — 12 Sessions</option>
                   </optgroup>
 
                   {/* Standard Memberships & Coaching */}

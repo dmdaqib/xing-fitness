@@ -122,8 +122,8 @@ export interface TrainerEntity {
   role: string;
   photoUrl: string;
   specialization: string[];
-  experience: string;
-  certifications: string[];
+  experience?: string;
+  certifications?: string[];
   bio: string;
   availability: TrainerAvailability[];
   active: boolean;

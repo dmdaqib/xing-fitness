@@ -8,6 +8,7 @@ import { ScrollToTop } from './components/common/ScrollToTop';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { SupportWidget } from './components/common/SupportWidget';
+import { FloatingContactBar } from './components/common/FloatingContactBar';
 import { FreeTrialModal } from './components/forms/FreeTrialModal';
 import { EnquiryModal } from './components/forms/EnquiryModal';
 import { OfferPopup } from './components/common/OfferPopup';
@@ -151,6 +152,7 @@ function AppContent() {
               />
             }
           />
+          <Route path="/offer" element={<Navigate to="/offers" replace />} />
 
           {/* 7. CONTACT & FREE TRIAL */}
           <Route path="/contact" element={<ContactPage />} />
@@ -363,6 +365,7 @@ function AppContent() {
       {!isPortalOrAuthRoute && (
         <>
           <Footer onOpenTrialModal={() => handleOpenTrialModal()} />
+          <FloatingContactBar />
           <SupportWidget
             onOpenTrial={() => handleOpenTrialModal('Free Trial Pass')}
             onOpenEnquiry={(type) => handleOpenEnquiryModal(type || 'Membership Enquiry')}

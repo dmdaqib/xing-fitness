@@ -55,15 +55,16 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
             </div>
           </div>
 
-          {/* Quick Filter Buttons */}
-          <div className="flex items-center gap-2 shrink-0 overflow-x-auto pb-1 sm:pb-0">
+          {/* Quick Filter Buttons: Responsive 2-column wrapped grid on mobile, inline row on desktop */}
+          <div className="grid grid-cols-2 gap-2 w-full md:w-auto md:flex md:items-center md:gap-2 md:shrink-0">
             <button
               type="button"
               onClick={() => setActiveCategory('all')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
+              id="filter-category-all"
+              className={`col-span-2 md:col-auto py-2.5 sm:py-2 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-center justify-center flex items-center cursor-pointer min-h-[42px] sm:min-h-0 ${
                 activeCategory === 'all'
-                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20'
-                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10'
+                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20 font-black'
+                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10 hover:bg-white/10'
               }`}
             >
               All Programs
@@ -71,37 +72,40 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
             <button
               type="button"
               onClick={() => setActiveCategory('classes')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+              id="filter-category-classes"
+              className={`col-span-1 md:col-auto py-2.5 sm:py-2 px-3 sm:px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] sm:min-h-0 ${
                 activeCategory === 'classes'
-                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20'
-                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10'
+                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20 font-black'
+                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10 hover:bg-white/10'
               }`}
             >
-              <Users className="w-3.5 h-3.5" />
+              <Users className="w-3.5 h-3.5 shrink-0" />
               <span>Classes</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveCategory('memberships')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+              id="filter-category-memberships"
+              className={`col-span-1 md:col-auto py-2.5 sm:py-2 px-3 sm:px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] sm:min-h-0 ${
                 activeCategory === 'memberships'
-                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20'
-                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10'
+                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20 font-black'
+                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10 hover:bg-white/10'
               }`}
             >
-              <CreditCard className="w-3.5 h-3.5" />
+              <CreditCard className="w-3.5 h-3.5 shrink-0" />
               <span>Memberships</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveCategory('outcomes')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+              id="filter-category-outcomes"
+              className={`col-span-2 md:col-auto py-2.5 sm:py-2 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] sm:min-h-0 ${
                 activeCategory === 'outcomes'
-                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20'
-                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10'
+                  ? 'bg-[#D4AF37] text-black shadow-lg shadow-[#D4AF37]/20 font-black'
+                  : 'bg-white/5 text-[#94A3B8] hover:text-white border border-white/10 hover:bg-white/10'
               }`}
             >
-              <Target className="w-3.5 h-3.5" />
+              <Target className="w-3.5 h-3.5 shrink-0" />
               <span>Outcome Packages</span>
             </button>
           </div>
@@ -307,7 +311,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                   Calibrated to target specific physiological outcomes. Combines structured progression roadmaps, machine biomechanics, and personalized coach guidance.
                 </p>
               </div>
-              <span className="text-xs text-[#94A3B8] bg-white/[0.04] px-3.5 py-1.5 rounded-full border border-white/10 shrink-0">
+              <span className="inline-block text-xs text-[#94A3B8] bg-white/[0.04] px-3.5 py-1.5 rounded-full border border-white/10 shrink-0 max-w-full">
                 Periodized Roadmaps • Objective Goal Milestones
               </span>
             </div>
@@ -316,7 +320,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
               {OUTCOME_PACKAGES_DATA.map((pkg: OutcomePackageItem, pIdx) => (
                 <div
                   key={pkg.id}
-                  className="rounded-3xl bg-[#14161D] border border-white/10 p-6 sm:p-10 hover:border-[#D4AF37]/40 transition-all shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+                  className="rounded-2xl sm:rounded-3xl bg-[#14161D] border border-white/10 p-4 sm:p-6 md:p-10 hover:border-[#D4AF37]/40 transition-all shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center"
                 >
                   <div className="lg:col-span-5 relative rounded-2xl overflow-hidden aspect-[4/3]">
                     <img
@@ -338,7 +342,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
 
                   <div className="lg:col-span-7 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center gap-2 text-xs font-bold text-[#D4AF37] uppercase tracking-wider mb-1">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-bold text-[#D4AF37] uppercase tracking-wider mb-1">
                         <span>Package 0{pIdx + 1}</span>
                         <span>•</span>
                         <span>{pkg.duration}</span>
@@ -387,11 +391,11 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-white/5">
+                    <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 pt-4 border-t border-white/5">
                       <button
                         type="button"
                         onClick={() => onOpenTrialModal(pkg.name)}
-                        className="px-6 py-3 rounded-full bg-[#D4AF37] text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-[#C5A028] transition-all shadow-lg shadow-[#D4AF37]/20 flex items-center gap-2"
+                        className="w-full sm:w-auto px-6 py-3 rounded-full bg-[#D4AF37] text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-[#C5A028] transition-all shadow-lg shadow-[#D4AF37]/20 flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <span>{pkg.ctaText}</span>
                         <ArrowRight className="w-4 h-4" />
@@ -399,7 +403,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                       <button
                         type="button"
                         onClick={() => onOpenEnquiryModal(pkg.name)}
-                        className="px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white font-display font-bold text-xs uppercase tracking-wider transition-all"
+                        className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white font-display font-bold text-xs uppercase tracking-wider transition-all cursor-pointer text-center"
                       >
                         Request Package Consultation
                       </button>

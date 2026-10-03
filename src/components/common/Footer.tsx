@@ -151,13 +151,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTrialModal }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
           {/* Brand & Identity Column */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-[#D4AF37] flex items-center justify-center font-black text-black text-lg shadow-lg">
-                X
-              </div>
-              <span className="font-display font-black text-2xl text-white tracking-wider">
-                XING <span className="text-[#D4AF37]">FITNESS</span>
-              </span>
+            <Link to="/" className="inline-block group outline-none focus:outline-none focus:ring-0 select-none" aria-label="Xing Fitness Home">
+              <img
+                src="/images/branding/xing-fitness-logo.png"
+                alt="Xing Fitness"
+                className="h-11 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+              />
             </Link>
 
             <p className="text-xs text-[#94A3B8] leading-relaxed max-w-sm">

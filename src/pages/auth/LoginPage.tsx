@@ -45,13 +45,12 @@ export const LoginPage: React.FC = () => {
 
       {/* Header & Brand */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
-        <Link to="/" className="inline-flex items-center gap-2.5 mb-6 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1C212D] to-[#12151B] border border-white/15 flex items-center justify-center shadow-lg shadow-black/80 group-hover:border-[#D4AF37]/50 transition-colors">
-            <span className="font-extrabold text-xl text-[#D4AF37] tracking-tighter">X</span>
-          </div>
-          <span className="text-2xl font-black tracking-wider text-white uppercase font-display">
-            Xing <span className="text-[#D4AF37]">Fitness</span>
-          </span>
+        <Link to="/" className="inline-block mb-6 group" aria-label="Xing Fitness Home">
+          <img
+            src="/images/branding/xing-fitness-logo.png"
+            alt="Xing Fitness"
+            className="h-12 sm:h-14 w-auto object-contain mx-auto transition-transform duration-200 group-hover:scale-105"
+          />
         </Link>
         <h1 className="text-3xl font-black tracking-tight text-white font-display">
           Portal Sign In

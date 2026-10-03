@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ArrowRight, MessageCircle, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { VERIFIED_OFFERS, type VerifiedOffer } from '../../data/offers';
 
@@ -6,31 +7,58 @@ interface OfferPopupProps {
   onOpenEnquiry: (offerValue: string) => void;
 }
 
-const STORAGE_KEY = 'xing_offer_popup_dismissed';
-
 export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    // Check if dismissed in this browsing session
-    const isDismissed = sessionStorage.getItem(STORAGE_KEY);
-    if (isDismissed) return;
+    // 1. Unconditionally wipe any old suppression flags in storage
+    try {
+      const keysToClean = [
+        'xing_offer_popup_dismissed',
+        'xing_offer_dismissed',
+        'offer_popup_shown',
+        'xing_offer_popup_dismissed_session',
+        'offer_dismissed',
+        'hasSeenOffer',
+        'offerShown'
+      ];
+      keysToClean.forEach((k) => {
+        localStorage.removeItem(k);
+        sessionStorage.removeItem(k);
+      });
+    } catch {
+      // Ignored
+    }
 
-    // Tasteful short delay (3.5s) so visitor can first view the page
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 3500);
+    // 2. Global developer/tester helpers
+    if (typeof window !== 'undefined') {
+      (window as any).__showOfferPopup = () => setIsOpen(true);
+      (window as any).__resetOfferPopup = () => setIsOpen(true);
+      
+      const handleCustomOpen = () => setIsOpen(true);
+      window.addEventListener('open-offer-popup', handleCustomOpen);
+      
+      // Auto-trigger offer popup on website visit after short 700ms delay
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 700);
 
-    return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('open-offer-popup', handleCustomOpen);
+      };
+    }
   }, []);
 
   // Keyboard accessibility (Escape key closes) & Body Scroll Lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -41,12 +69,12 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
   const handleDismiss = () => {
-    sessionStorage.setItem(STORAGE_KEY, 'true');
     setIsOpen(false);
   };
 
@@ -66,35 +94,52 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
     setActiveIndex((prev) => (prev === VERIFIED_OFFERS.length - 1 ? 0 : prev + 1));
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   const currentOffer: VerifiedOffer = VERIFIED_OFFERS[activeIndex];
 
-  return (
+  const modalContent = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300"
+      id="xing-offer-popup-backdrop"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-label="Xing Fitness Exclusive Offers"
       onClick={handleDismiss}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 9999,
+        backgroundColor: 'rgba(0, 0, 0, 0.85)'
+      }}
     >
       <div
-        className="relative w-full max-w-lg bg-[#121620] border-2 border-[#D4AF37]/50 rounded-3xl p-4 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.9)] max-h-[94vh] overflow-y-auto flex flex-col justify-between animate-in zoom-in-95 duration-200"
+        id="xing-offer-popup-card"
+        className="relative w-full max-w-[480px] bg-[#121620] border-2 border-[#D4AF37]/50 rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-[0_25px_60px_rgba(0,0,0,0.95)] max-h-[94vh] overflow-y-auto flex flex-col justify-between"
         onClick={(e) => e.stopPropagation()}
+        style={{
+          boxShadow: '0 25px 60px rgba(0,0,0,0.95), 0 0 30px rgba(212, 175, 55, 0.15)'
+        }}
       >
         {/* Close Button */}
         <button
           type="button"
           onClick={handleDismiss}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2 rounded-full bg-black/70 hover:bg-black text-gray-400 hover:text-white border border-white/10 hover:border-white/30 transition-all cursor-pointer"
+          id="offer-popup-close-btn"
+          className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-20 p-1.5 sm:p-2 rounded-full bg-black/80 hover:bg-black text-gray-300 hover:text-white border border-white/20 hover:border-white/40 transition-all cursor-pointer shadow-lg"
           aria-label="Close offer popup"
         >
           <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {/* Top Eyebrow */}
-        <div className="flex items-center gap-2 mb-3 pr-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#D4AF37] text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
+        <div className="flex items-center gap-2 mb-2 pr-10">
+          <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#D4AF37] text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
             <Sparkles className="w-3 h-3" />
             <span>Official Club Promotion</span>
           </span>
@@ -104,12 +149,12 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
         </div>
 
         {/* Real Poster Creative Showcase with Prev/Next Controls */}
-        <div className="relative rounded-2xl overflow-hidden bg-black/70 border border-white/10 aspect-square max-h-[38vh] sm:max-h-none w-full mb-3 flex items-center justify-center shadow-inner group">
+        <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-black/80 border border-white/10 h-[135px] sm:h-[175px] w-full mb-2 flex items-center justify-center shadow-inner group shrink-0">
           <img
             key={currentOffer.id}
             src={currentOffer.posterImage}
             alt={currentOffer.altText}
-            className="w-full h-full object-contain p-1 rounded-2xl select-none"
+            className="w-full h-full object-contain p-1 select-none"
             loading="eager"
           />
 
@@ -117,7 +162,8 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
           <button
             type="button"
             onClick={handlePrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 hover:bg-black text-white border border-white/15 flex items-center justify-center cursor-pointer transition-all hover:scale-110 opacity-80 hover:opacity-100"
+            id="offer-popup-prev-btn"
+            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/80 hover:bg-black text-white border border-white/20 flex items-center justify-center cursor-pointer transition-all hover:scale-110 opacity-80 hover:opacity-100 shadow-md"
             aria-label="Previous offer"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -125,7 +171,8 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
           <button
             type="button"
             onClick={handleNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/70 hover:bg-black text-white border border-white/15 flex items-center justify-center cursor-pointer transition-all hover:scale-110 opacity-80 hover:opacity-100"
+            id="offer-popup-next-btn"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/80 hover:bg-black text-white border border-white/20 flex items-center justify-center cursor-pointer transition-all hover:scale-110 opacity-80 hover:opacity-100 shadow-md"
             aria-label="Next offer"
           >
             <ChevronRight className="w-4 h-4" />
@@ -133,17 +180,18 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
         </div>
 
         {/* 4 Offer Selection Chips */}
-        <div className="grid grid-cols-4 gap-1.5 mb-3">
+        <div className="grid grid-cols-4 gap-1 sm:gap-1.5 mb-2.5 sm:mb-3 shrink-0">
           {VERIFIED_OFFERS.map((off, idx) => {
             const isSelected = idx === activeIndex;
             return (
               <button
                 key={off.id}
                 type="button"
+                id={`offer-chip-${idx}`}
                 onClick={() => setActiveIndex(idx)}
-                className={`py-1.5 px-1 rounded-xl text-[10px] sm:text-[11px] font-bold text-center transition-all truncate border cursor-pointer ${
+                className={`py-1.5 px-1 rounded-xl text-[9px] sm:text-[11px] font-bold text-center transition-all truncate border cursor-pointer ${
                   isSelected
-                    ? 'bg-[#D4AF37] text-black border-[#D4AF37] shadow-md shadow-[#D4AF37]/20'
+                    ? 'bg-[#D4AF37] text-black border-[#D4AF37] shadow-md shadow-[#D4AF37]/20 font-black'
                     : 'bg-white/5 text-[#94A3B8] border-white/10 hover:text-white hover:bg-white/10'
                 }`}
                 title={off.title}
@@ -155,23 +203,23 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
         </div>
 
         {/* Offer Details */}
-        <div className="mb-4">
-          <h3 className="font-display font-black text-base sm:text-lg text-white leading-tight">
+        <div className="mb-3 sm:mb-4">
+          <h3 className="font-display font-black text-sm sm:text-base text-white leading-tight">
             {currentOffer.title}
           </h3>
-          <p className="text-[11px] sm:text-xs text-[#94A3B8] mt-1 leading-snug">
+          <p className="text-[11px] sm:text-xs text-[#94A3B8] mt-0.5 leading-snug">
             Available at Xing Fitness AECS Layout, Brookefield. Claim your slot or discuss details with our front desk.
           </p>
         </div>
 
         {/* Conversion Action Buttons */}
-        <div className="space-y-2">
+        <div className="space-y-2 shrink-0">
           {/* Primary CTA: ENQUIRE NOW */}
           <button
             type="button"
             onClick={handleEnquire}
             id="offer-popup-enquire-now-btn"
-            className="w-full py-3.5 rounded-xl bg-[#D4AF37] hover:bg-[#C5A028] text-black font-display font-black text-xs sm:text-sm uppercase tracking-wider transition-all shadow-xl shadow-[#D4AF37]/25 flex items-center justify-center gap-2 cursor-pointer btn-primary-glow"
+            className="w-full py-2.5 sm:py-3 rounded-xl bg-[#D4AF37] hover:bg-[#C5A028] text-black font-display font-black text-xs sm:text-sm uppercase tracking-wider transition-all shadow-xl shadow-[#D4AF37]/25 flex items-center justify-center gap-2 cursor-pointer btn-primary-glow"
           >
             <span>ENQUIRE NOW</span>
             <ArrowRight className="w-4 h-4" />
@@ -184,16 +232,16 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleDismiss}
-              className="py-2.5 px-3 rounded-xl bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/30 text-[#25D366] hover:text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
+              className="py-2 px-2 sm:px-3 rounded-xl bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/30 text-[#25D366] hover:text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center truncate"
             >
-              <MessageCircle className="w-3.5 h-3.5" />
-              <span>WhatsApp Desk</span>
+              <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">WhatsApp Desk</span>
             </a>
 
             <button
               type="button"
               onClick={handleDismiss}
-              className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[#8F9CAE] hover:text-white text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer text-center"
+              className="py-2 px-2 sm:px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-[#8F9CAE] hover:text-white text-[10px] sm:text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer text-center"
             >
               Maybe Later
             </button>
@@ -202,4 +250,11 @@ export const OfferPopup: React.FC<OfferPopupProps> = ({ onOpenEnquiry }) => {
       </div>
     </div>
   );
+
+  // Mount directly to document.body via createPortal
+  if (typeof document !== 'undefined') {
+    return createPortal(modalContent, document.body);
+  }
+
+  return modalContent;
 };

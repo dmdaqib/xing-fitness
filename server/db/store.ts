@@ -352,23 +352,20 @@ function getInitialDatabaseSeed(): DatabaseSchema {
 
   const trainers: TrainerEntity[] = [
     {
-      id: 'coach-1',
-      name: '[TRAINER NAME - Head Strength Coach]',
-      role: 'Head Strength & Conditioning Coach',
-      photoUrl: '/images/real/training-floor/xing-fitness-dumbbell-benches-training-md.webp',
+      id: 'preetam',
+      name: 'Preetam',
+      role: 'Fitness Trainer',
+      photoUrl: '/images/trainers/preetam.jpg',
       specialization: [
-        'Matrix Machine Biomechanics',
-        'Powerlifting & Barbell Mechanics',
-        'Hypertrophy Periodization',
-        'Postural Form Correction'
+        'Strength Training',
+        'Weight-Loss Support',
+        'Muscle Building',
+        'General Fitness',
+        'Personalized Workout Guidance',
+        'Proper Exercise Technique',
+        'Progressive Training'
       ],
-      experience: '[YEARS EXPERIENCE]',
-      certifications: [
-        '[CERTIFICATION - CSCS / ACE / K11]',
-        '[CERTIFICATION - Sports Biomechanics]',
-        '[CERTIFICATION - CPR & First Aid]'
-      ],
-      bio: 'Leads personalized strength coaching on our main training floor. Focused on progressive overload, joint alignment, and structured resistance training.',
+      bio: 'Preetam provides disciplined, personalized fitness coaching designed to help members achieve lasting results through progressive strength training and proper exercise mechanics. He focuses on muscle building, safe weight-loss support, and step-by-step guidance that builds training confidence on the gym floor.',
       availability: [
         { dayOfWeek: 'Mon', timeSlots: ['06:00 AM', '07:00 AM', '05:00 PM', '06:00 PM'] },
         { dayOfWeek: 'Wed', timeSlots: ['06:00 AM', '07:00 AM', '05:00 PM', '06:00 PM'] },
@@ -379,22 +376,20 @@ function getInitialDatabaseSeed(): DatabaseSchema {
       updatedAt: nowIso
     },
     {
-      id: 'coach-2',
-      name: '[TRAINER NAME - Functional Coach]',
-      role: 'Functional Conditioning & Mobility Specialist',
-      photoUrl: '/images/real/training-floor/xing-fitness-center-floor-dual-cables-md.webp',
+      id: 'arvind',
+      name: 'Arvind',
+      role: 'Fitness Trainer',
+      photoUrl: '/images/trainers/arvind.jpg',
       specialization: [
-        'Movement Screenings (FMS)',
-        'Dual Cable Functional Systems',
-        'Metabolic Conditioning',
-        'Joint Health & Mobility'
+        'Functional Fitness',
+        'Strength & Conditioning',
+        'Fat-Loss Support',
+        'Mobility & Movement',
+        'Fitness Consistency',
+        'Personalized Training',
+        'Exercise Technique'
       ],
-      experience: '[YEARS EXPERIENCE]',
-      certifications: [
-        '[CERTIFICATION - NASM / ACSM / ISSA]',
-        '[CERTIFICATION - Functional Movement]'
-      ],
-      bio: 'Dedicated to injury-free longevity, metabolic stamina, and functional range of motion for working professionals and fitness enthusiasts in Whitefield.',
+      bio: 'Arvind takes a functional, movement-first approach to fitness, helping members develop full-body strength, mobility, and long-term physical conditioning. His coaching emphasizes workout consistency, effective fat-loss strategies, and refined technique so members move efficiently and stay injury-free.',
       availability: [
         { dayOfWeek: 'Tue', timeSlots: ['07:00 AM', '08:00 AM', '06:00 PM', '07:00 PM'] },
         { dayOfWeek: 'Thu', timeSlots: ['07:00 AM', '08:00 AM', '06:00 PM', '07:00 PM'] },
@@ -405,24 +400,25 @@ function getInitialDatabaseSeed(): DatabaseSchema {
       updatedAt: nowIso
     },
     {
-      id: 'coach-3',
-      name: '[TRAINER NAME - Group Studio Lead]',
-      role: 'Group Fitness & Aerobics Lead Instructor',
-      photoUrl: '/images/real/group-studio/xing-fitness-aerobic-dance-studio-purple-md.webp',
+      id: 'surbhi',
+      name: 'Surbhi',
+      role: 'Zumba / Fitness Trainer',
+      photoUrl: '/images/trainers/surbhi.jpg',
       specialization: [
-        'Aerobic Dance & Zumba Fitness',
-        'High-Tempo HIIT Circuits',
-        'Core & Rhythm Conditioning'
+        'Zumba Classes',
+        'Dance-Based Fitness',
+        'Cardio Conditioning',
+        'Full-Body Movement',
+        'Coordination & Rhythm',
+        'Energy & Engagement',
+        'Beginner-Friendly Workouts',
+        'Enjoyable Group Workouts'
       ],
-      experience: '[YEARS EXPERIENCE]',
-      certifications: [
-        '[CERTIFICATION - Certified Group Fitness Instructor]',
-        '[CERTIFICATION - Aerobic Dance Specialist]'
-      ],
-      bio: 'Commands the mirrored stage inside our dedicated purple & blue studio, delivering high-octane group workouts on our sprung wooden flooring.',
+      bio: 'Surbhi leads dynamic Zumba and group fitness sessions that combine uplifting music, dance-inspired rhythms, and cardio conditioning into a motivating full-body workout. Her classes prioritize coordination, high energy, and an inclusive, beginner-friendly atmosphere where staying active is genuinely enjoyable.',
       availability: [
         { dayOfWeek: 'Mon', timeSlots: ['06:30 PM'] },
         { dayOfWeek: 'Wed', timeSlots: ['06:30 PM'] },
+        { dayOfWeek: 'Fri', timeSlots: ['06:30 PM'] },
         { dayOfWeek: 'Sat', timeSlots: ['09:00 AM'] }
       ],
       active: true,
@@ -436,7 +432,7 @@ function getInitialDatabaseSeed(): DatabaseSchema {
       id: 'cls-1',
       title: 'High-Energy Zumba Fitness',
       category: 'Zumba',
-      trainerName: '[TRAINER NAME - Group Studio Lead]',
+      trainerName: 'Surbhi',
       dayOfWeek: 'Mon',
       time: '06:30 PM',
       duration: '50 min',
@@ -450,7 +446,7 @@ function getInitialDatabaseSeed(): DatabaseSchema {
       id: 'cls-2',
       title: 'Vinyasa Flow & Postural Yoga',
       category: 'Yoga',
-      trainerName: '[TRAINER NAME - Yoga Coach]',
+      trainerName: 'Arvind',
       dayOfWeek: 'Wed',
       time: '07:00 AM',
       duration: '60 min',
@@ -464,7 +460,7 @@ function getInitialDatabaseSeed(): DatabaseSchema {
       id: 'cls-3',
       title: 'Aerobic Dance Fitness',
       category: 'Dance Fitness',
-      trainerName: '[TRAINER NAME - Group Studio Lead]',
+      trainerName: 'Surbhi',
       dayOfWeek: 'Fri',
       time: '06:30 PM',
       duration: '50 min',
@@ -478,7 +474,7 @@ function getInitialDatabaseSeed(): DatabaseSchema {
       id: 'cls-4',
       title: 'Weekend Strength & Conditioning Camp',
       category: 'Strength',
-      trainerName: '[TRAINER NAME - Head Strength Coach]',
+      trainerName: 'Preetam',
       dayOfWeek: 'Sat',
       time: '08:30 AM',
       duration: '55 min',

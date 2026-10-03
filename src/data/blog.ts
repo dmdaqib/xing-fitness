@@ -9,7 +9,14 @@ export const BLOG_POSTS: BlogPost[] = [
     category: 'Strength Training',
     readTime: '5 min read',
     date: 'September 2026',
-    image: '/images/real/hero/xing-fitness-main-training-floor-hero-md.webp',
+    image: '/images/blog/desk-worker-strength-training-barbell-deadlift.webp',
+    imageJpg: '/images/blog/desk-worker-strength-training-barbell-deadlift.jpg',
+    imageAlt: 'Athletic lifter executing a proper barbell deadlift in a modern gym to strengthen the posterior chain and counteract sedentary desk fatigue',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Victor Freitas',
     content: `
 Long hours seated at a workstation in Whitefield's tech corridor often lead to anterior pelvic tilt, rounded shoulders, and tight hip flexors. While cardiovascular exercise supports heart health, it doesn't adequately restore postural structural integrity.
 
@@ -31,7 +38,14 @@ You do not need two hours in the gym every day. 45 to 60 minutes of focused, hig
     category: 'Weight Loss',
     readTime: '6 min read',
     date: 'September 2026',
-    image: '/images/real/cardio/xing-fitness-cardio-zone-treadmills-md.webp',
+    image: '/images/blog/sustainable-weight-loss-resistance-training-dumbbells.webp',
+    imageJpg: '/images/blog/sustainable-weight-loss-resistance-training-dumbbells.jpg',
+    imageAlt: 'Woman performing progressive resistance dumbbell training in a fitness club for sustainable fat loss and muscle preservation',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Jahir Martinez',
     content: `
 Extreme calorie deficits combined with excessive steady-state cardio frequently result in loss of lean muscle tissue, dropping your basal metabolic rate (BMR) and creating the dreaded rebound weight gain.
 
@@ -53,7 +67,14 @@ Use cardio for cardiovascular health and work capacity rather than purely as a c
     category: 'Personal Training',
     readTime: '5 min read',
     date: 'September 2026',
-    image: '/images/real/training-floor/xing-fitness-dumbbell-benches-training-md.webp',
+    image: '/images/blog/one-on-one-personal-trainer-coaching-client-xing-fitness.webp',
+    imageJpg: '/images/blog/one-on-one-personal-trainer-coaching-client-xing-fitness.jpg',
+    imageAlt: 'Certified personal trainer coaching and monitoring a client’s exercise mechanics during a one-on-one strength training session',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Julia Larson',
     content: `
 Navigating a gym floor without a structured plan often leads to plateaus, wasted effort, or joint irritation from improper lifting mechanics. Dedicated personal training provides three critical advantages.
 
@@ -75,7 +96,14 @@ Trainers structure your mesocycles with calculated volume, planned deloads, and 
     category: 'HIIT',
     readTime: '4 min read',
     date: 'September 2026',
-    image: '/images/real/group-studio/xing-fitness-aerobic-dance-studio-purple-md.webp',
+    image: '/images/blog/high-intensity-interval-training-hiit-battle-ropes.webp',
+    imageJpg: '/images/blog/high-intensity-interval-training-hiit-battle-ropes.jpg',
+    imageAlt: 'Athletes performing high-intensity interval training with heavy battle ropes during a fast-paced metabolic conditioning workout',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Vitaly Gariev',
     content: `
 For professionals balancing demanding careers with family commitments in Brookefield and Whitefield, time efficiency is paramount. HIIT delivers robust cardiovascular and metabolic adaptations in a fraction of standard training time.
 
@@ -94,7 +122,14 @@ Conducted on shock-absorbing sprung flooring, our group HIIT sessions combine bo
     category: 'Yoga',
     readTime: '5 min read',
     date: 'September 2026',
-    image: '/images/real/group-studio/xing-fitness-aerobic-dance-studio-neon-md.webp',
+    image: '/images/blog/yoga-dynamic-mobility-stretching-strength-athletes.webp',
+    imageJpg: '/images/blog/yoga-dynamic-mobility-stretching-strength-athletes.jpg',
+    imageAlt: 'Fitness practitioner performing deep dynamic yoga mobility stretches on a mat to enhance joint range of motion and recovery',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Unsplash Community',
     content: `
 Many strength enthusiasts view yoga and resistance training as opposites. In reality, dedicated mobility work unlocks deeper squat depths, safer overhead positions, and faster parasympathetic recovery.
 
@@ -113,7 +148,14 @@ Yoga teaches diaphragmatic expansion and breath control, directly improving your
     category: 'Functional Training',
     readTime: '5 min read',
     date: 'September 2026',
-    image: '/images/real/training-floor/xing-fitness-center-floor-dual-cables-md.webp',
+    image: '/images/blog/functional-training-kettlebell-swings-everyday-strength.webp',
+    imageJpg: '/images/blog/functional-training-kettlebell-swings-everyday-strength.jpg',
+    imageAlt: 'Lifters performing dynamic kettlebell swings to build functional multi-planar power and core stability',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Unsplash Community',
     content: `
 Traditional gym training frequently locks the body into single-plane sagittal movements. Functional training develops strength across the frontal (side-to-side) and transverse (rotational) planes.
 
@@ -132,7 +174,14 @@ By training stabilizers around the hips, knees, and ankles, functional training 
     category: 'Nutrition',
     readTime: '6 min read',
     date: 'September 2026',
-    image: '/images/real/equipment/xing-fitness-matrix-strength-stations-md.webp',
+    image: '/images/blog/nutrition-foundations-protein-meal-prep-hydration.webp',
+    imageJpg: '/images/blog/nutrition-foundations-protein-meal-prep-hydration.jpg',
+    imageAlt: 'Balanced high-protein meal prep containers with complex carbohydrates and fresh vegetables for athletic nutrition',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Unsplash Community',
     content: `
 Nutrition does not require complex diets or exotic supplements. Mastering simple macronutrient benchmarks and hydration drives 90% of your body composition outcomes.
 
@@ -154,7 +203,14 @@ Even a 2% dehydration level significantly reduces force output and increases per
     category: 'Beginner Fitness',
     readTime: '5 min read',
     date: 'September 2026',
-    image: '/images/real/training-floor/xing-fitness-dumbbell-benches-training-md.webp',
+    image: '/images/blog/beginner-gym-blueprint-fundamental-dumbbell-squat.webp',
+    imageJpg: '/images/blog/beginner-gym-blueprint-fundamental-dumbbell-squat.jpg',
+    imageAlt: 'Lifter learning foundational movement mechanics with a dumbbell squat during beginner full-body strength training',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Unsplash',
+    imageLicense: 'Unsplash Free Commercial License',
+    imagePhotographer: 'Rodrigo Rodrigues',
     content: `
 Stepping into a modern training facility for the first time can feel intimidating. The key to lasting success is stripping away complexity and mastering 5 fundamental movement patterns.
 
@@ -177,7 +233,14 @@ For beginners, three non-consecutive full-body sessions per week allow maximum m
     category: 'Gym Tips',
     readTime: '4 min read',
     date: 'September 2026',
-    image: '/images/real/training-floor/xing-fitness-free-weights-dumbbell-area-md.webp',
+    image: '/images/blog/smart-gym-tips-etiquette-xing-fitness-dumbbell-area.webp',
+    imageJpg: '/images/blog/smart-gym-tips-etiquette-xing-fitness-dumbbell-area.jpg',
+    imageAlt: 'Organized multi-tier dumbbell racks and workout floor at Xing Fitness AECS Layout demonstrating proper gym etiquette and equipment care',
+    imageWidth: 1200,
+    imageHeight: 750,
+    imageSource: 'Xing Fitness Club',
+    imageLicense: 'Official Club Facility Photography',
+    imagePhotographer: 'Xing Fitness Club Media',
     content: `
 Efficiency on the training floor separates lifters who make consistent monthly progress from those who spend an hour scrolling their phones between half-hearted sets.
 

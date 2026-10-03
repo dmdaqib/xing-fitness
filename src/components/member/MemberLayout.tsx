@@ -103,18 +103,15 @@ export const MemberLayout: React.FC<MemberLayoutProps> = ({ children }) => {
         {/* Sidebar Brand Header */}
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#D4AF37] to-[#D4AF37] flex items-center justify-center shadow-lg shadow-[#D4AF37]/20">
-                <Dumbbell className="w-5 h-5 text-black" />
-              </div>
-              <div>
-                <span className="text-lg font-black tracking-tight text-white uppercase font-display block leading-none">
-                  Xing <span className="text-[#D4AF37]">Fitness</span>
-                </span>
-                <span className="text-[10px] text-[#A1A1AA] uppercase tracking-widest font-semibold">
-                  Member Portal
-                </span>
-              </div>
+            <Link to="/" className="flex items-center gap-2 group" aria-label="Xing Fitness Home">
+              <img
+                src="/images/branding/xing-fitness-logo.png"
+                alt="Xing Fitness"
+                className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
+              />
+              <span className="text-[10px] text-[#A1A1AA] uppercase tracking-widest font-semibold border-l border-white/15 pl-2.5">
+                Member
+              </span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}

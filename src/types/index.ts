@@ -16,15 +16,23 @@ export interface Program {
 export interface Trainer {
   id: string;
   slug: string;
-  name: string; // [TRAINER NAME] placeholder
-  isPlaceholderName: boolean;
+  name: string;
   role: string;
-  specialization: string[];
-  experience: string;
-  certifications: string[];
-  bio: string;
+  photo?: string;
   image: string;
+  hasRealPhoto?: boolean;
+  isPlaceholderName?: boolean;
+  bio: string;
+  trainingFocus: string[];
+  specialization?: string[];
+  experience?: string;
+  certifications?: string[];
   instagram?: string;
+}
+
+export interface LeadershipMember {
+  name: string;
+  role: string;
 }
 
 export interface MembershipPlan {
@@ -101,6 +109,13 @@ export interface BlogPost {
   readTime: string;
   date: string;
   image: string;
+  imageJpg?: string;
+  imageAlt: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  imageSource?: string;
+  imageLicense?: string;
+  imagePhotographer?: string;
   content: string;
 }
 

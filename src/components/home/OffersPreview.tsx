@@ -62,7 +62,7 @@ export const OffersPreview: React.FC<OffersPreviewProps> = ({
             <div className="lg:col-span-4 flex flex-col gap-3">
               <button
                 type="button"
-                onClick={() => onOpenEnquiryModal(`Claim ${featuredOffer.title}`)}
+                onClick={() => onOpenEnquiryModal(featuredOffer.enquiryValue)}
                 className="w-full py-4 rounded-full bg-[#D4AF37] text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-[#C5A028] transition-all shadow-xl shadow-[#D4AF37]/25 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Claim This Offer</span>

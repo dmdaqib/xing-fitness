@@ -67,26 +67,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTrialModal }) => {
             {/* Brand Logo */}
             <Link
               to="/"
-              className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none focus:ring-2 focus:ring-[#D4AF37] rounded-lg p-1"
+              className="flex items-center group outline-none focus:outline-none focus:ring-0 select-none py-0.5"
               aria-label="Xing Fitness Home"
             >
-              <div className="relative w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-[#1C212D] to-[#12151B] border border-white/15 rounded-xl flex items-center justify-center overflow-hidden shadow-lg group-hover:border-[#D4AF37]/50 transition-colors">
-                <span className="font-extrabold text-lg sm:text-xl text-[#D4AF37] tracking-tighter">X</span>
-                <div className="absolute inset-0 bg-[#D4AF37]/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-baseline gap-1 sm:gap-1.5">
-                  <span className="font-display font-black text-lg sm:text-2xl text-white tracking-wider">
-                    XING
-                  </span>
-                  <span className="font-display font-semibold text-base sm:text-xl text-[#D4AF37] tracking-widest">
-                    FITNESS
-                  </span>
-                </div>
-                <span className="text-[9px] uppercase tracking-[0.25em] text-[#8F9CAE] font-medium hidden sm:block">
-                  Brookefield • Whitefield
-                </span>
-              </div>
+              <img
+                src="/images/branding/xing-fitness-logo.png"
+                alt="Xing Fitness"
+                className="h-9 sm:h-11 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+              />
             </Link>
 
             {/* Desktop Primary Navigation */}
@@ -180,8 +168,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTrialModal }) => {
           className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl lg:hidden pt-24 px-6 pb-8 flex flex-col justify-between overflow-y-auto animate-in fade-in duration-200"
         >
           <div className="space-y-2">
-            <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] px-3 pb-2 border-b border-white/10">
-              Menu Navigation
+            <div className="px-3 pb-3 mb-2 border-b border-white/10 flex items-center justify-between">
+              <img
+                src="/images/branding/xing-fitness-logo.png"
+                alt="Xing Fitness"
+                className="h-8 w-auto object-contain"
+              />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37]">
+                Menu Navigation
+              </span>
             </div>
 
             {navLinks.map((link) => (
