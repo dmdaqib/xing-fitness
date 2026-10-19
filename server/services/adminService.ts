@@ -65,7 +65,8 @@ export const adminService = {
       pendingTrainerRequests,
       totalTrainers: currentDb.trainers.length,
       totalClasses: currentDb.classes.length,
-      activeOffers: currentDb.offers.filter((o) => o.active).length
+      activeOffers: currentDb.offers.filter((o) => o.active).length,
+      openConcerns: (currentDb.concerns || []).filter((c) => c.status === 'NEW' || c.status === 'IN_PROGRESS').length
     };
   },
 

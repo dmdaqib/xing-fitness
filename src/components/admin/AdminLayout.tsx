@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   Shield,
+  ShieldAlert,
   Dumbbell,
   User
 } from 'lucide-react';
@@ -31,6 +32,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   const navItems = [
     { label: 'Overview', path: '/admin/dashboard', icon: LayoutDashboard },
+    { label: 'Member Concerns', path: '/admin/concerns', icon: ShieldAlert },
     { label: 'Members', path: '/admin/members', icon: Users },
     { label: 'Leads & Enquiries', path: '/admin/leads', icon: Target },
     { label: 'Free Trials', path: '/admin/trials', icon: Gift },

@@ -52,6 +52,8 @@ import { AdminPlansPage } from './pages/admin/AdminPlansPage';
 import { AdminTrainersPage } from './pages/admin/AdminTrainersPage';
 import { AdminClassesPage } from './pages/admin/AdminClassesPage';
 import { AdminOffersPage } from './pages/admin/AdminOffersPage';
+import { AdminConcernsPage } from './pages/admin/AdminConcernsPage';
+import { ConcernPage } from './pages/ConcernPage';
 
 function AppContent() {
   const location = useLocation();
@@ -77,7 +79,8 @@ function AppContent() {
     location.pathname.startsWith('/login') ||
     location.pathname.startsWith('/register') ||
     location.pathname.startsWith('/forgot-password') ||
-    location.pathname.startsWith('/reset-password');
+    location.pathname.startsWith('/reset-password') ||
+    location.pathname.startsWith('/concern');
 
   return (
     <div className="flex flex-col min-h-screen bg-[#090A0D] text-white selection:bg-[#D4AF37] selection:text-black">
@@ -168,6 +171,9 @@ function AppContent() {
           <Route path="/fitness-tools" element={<Navigate to="/programs" replace />} />
           <Route path="/fitness-tools/*" element={<Navigate to="/programs" replace />} />
           <Route path="/find-your-program" element={<Navigate to="/programs" replace />} />
+
+          {/* Dedicated Unlisted Route for In-Gym QR Code & Member Concerns */}
+          <Route path="/concern" element={<ConcernPage />} />
 
           {/* ========================================================= */}
           {/* P3 AUTHENTICATION ROUTES                                  */}
@@ -272,6 +278,16 @@ function AppContent() {
               <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
                 <AdminLayout>
                   <AdminDashboardPage />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/concerns"
+            element={
+              <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+                <AdminLayout>
+                  <AdminConcernsPage />
                 </AdminLayout>
               </ProtectedRoute>
             }

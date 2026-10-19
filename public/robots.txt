@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /concern
 Allow: /
 
 Sitemap: https://www.xingfitness.in/sitemap.xml

@@ -50,6 +50,11 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(leadData)
     }),
+  submitConcern: (concernData: any) =>
+    request<{ referenceId: string; category: string; createdAt: string; status: string }>('/api/public/concerns', {
+      method: 'POST',
+      body: JSON.stringify(concernData)
+    }),
 
   // Auth
   register: (data: any) =>
@@ -208,5 +213,41 @@ export const api = {
     request<any>('/api/admin/offers', {
       method: 'POST',
       body: JSON.stringify(data)
+    }),
+
+  // Concerns Management
+  getAdminConcerns: (params?: { category?: string; status?: string; search?: string }) => {
+    const query = new URLSearchParams();
+    if (params?.category && params.category !== 'all') query.append('category', params.category);
+    if (params?.status && params.status !== 'all') query.append('status', params.status);
+    if (params?.search) query.append('search', params.search);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return request<any[]>(`/api/admin/concerns${qs}`);
+  },
+  getAdminConcernStats: () => request<any>('/api/admin/concerns/stats'),
+  getAdminConcernDetail: (id: string) => request<any>(`/api/admin/concerns/${id}`),
+  updateConcernStatus: (id: string, status: string, resolutionDetails?: string) =>
+    request<any>(`/api/admin/concerns/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status, resolutionDetails })
+    }),
+  assignConcern: (id: string, staffId: string, staffName: string) =>
+    request<any>(`/api/admin/concerns/${id}/assign`, {
+      method: 'PATCH',
+      body: JSON.stringify({ staffId, staffName })
+    }),
+  addConcernNote: (id: string, note: string) =>
+    request<any>(`/api/admin/concerns/${id}/notes`, {
+      method: 'POST',
+      body: JSON.stringify({ note })
+    }),
+  getGoogleSheetsStatus: () => request<any>('/api/admin/concerns/sheets-status'),
+  testGoogleSheetsConnection: () =>
+    request<{ ok: boolean; message: string }>('/api/admin/concerns/sheets-test', {
+      method: 'POST'
+    }),
+  syncConcernToSheets: (id: string) =>
+    request<any>(`/api/admin/concerns/${id}/sync-sheets`, {
+      method: 'POST'
     })
 };

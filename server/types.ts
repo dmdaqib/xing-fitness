@@ -222,7 +222,7 @@ export interface Lead {
 export interface Notification {
   id: string;
   userId: string; // member userId or 'ALL' or 'STAFF'
-  type: 'membership' | 'booking' | 'trainer' | 'class' | 'announcement' | 'lead';
+  type: 'membership' | 'booking' | 'trainer' | 'class' | 'announcement' | 'lead' | 'concern';
   title: string;
   message: string;
   read: boolean;
@@ -267,3 +267,57 @@ export interface AuthSession {
     memberId?: string;
   };
 }
+
+export type ConcernCategory =
+  | 'Equipment or maintenance'
+  | 'Cleanliness and hygiene'
+  | 'Trainer or coaching'
+  | 'Staff behaviour'
+  | 'Membership or billing'
+  | 'Group classes'
+  | 'Safety concern'
+  | 'Suggestion'
+  | 'Other';
+
+export type ConcernStatus = 'NEW' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+
+export interface ConcernNote {
+  id: string;
+  authorId: string;
+  authorName: string;
+  authorRole: UserRole;
+  note: string;
+  createdAt: string;
+}
+
+export type GoogleSheetsSyncStatus = 'SYNCED' | 'PENDING' | 'FAILED' | 'NOT_CONFIGURED';
+
+export interface ConcernSubmission {
+  id: string;
+  referenceId: string;
+  category: ConcernCategory;
+  subject: string;
+  description: string;
+  incidentDate?: string;
+  gymLocation?: string;
+  name?: string;
+  contactInfo?: string;
+  phone?: string;
+  email?: string;
+  preferredContactMethod?: 'Phone Call' | 'WhatsApp' | 'Email' | 'No contact needed';
+  isAnonymous: boolean;
+  status: ConcernStatus;
+  assignedStaffId?: string;
+  assignedStaffName?: string;
+  internalNotes: ConcernNote[];
+  resolutionDetails?: string;
+  resolvedAt?: string;
+  resolvedBy?: string;
+  ipHash?: string;
+  googleSheetsSyncStatus: GoogleSheetsSyncStatus;
+  googleSheetsSyncedAt?: string;
+  googleSheetsError?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+

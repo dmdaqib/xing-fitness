@@ -15,7 +15,8 @@ import type {
   Lead,
   Notification,
   Offer,
-  FitnessProgressEntry
+  FitnessProgressEntry,
+  ConcernSubmission
 } from '../types.ts';
 
 
@@ -34,6 +35,7 @@ export interface DatabaseSchema {
   notifications: Notification[];
   offers: Offer[];
   progress: FitnessProgressEntry[];
+  concerns: ConcernSubmission[];
 }
 
 function getDbFilePath(): string {
@@ -572,13 +574,17 @@ function getInitialDatabaseSeed(): DatabaseSchema {
     leads,
     notifications,
     offers,
-    progress
+    progress,
+    concerns: []
   };
 }
 
 export const db = {
   get(): DatabaseSchema {
-    if (cachedDb) return cachedDb;
+    if (cachedDb) {
+      if (!cachedDb.concerns) cachedDb.concerns = [];
+      return cachedDb;
+    }
     const dbFile = getDbFilePath();
     ensureDataDirectory(dbFile);
 
@@ -592,6 +598,9 @@ export const db = {
     try {
       const raw = fs.readFileSync(dbFile, 'utf-8');
       cachedDb = JSON.parse(raw);
+      if (!cachedDb!.concerns) {
+        cachedDb!.concerns = [];
+      }
       return cachedDb!;
     } catch (parseErr) {
       console.error('[Database Store] Warning: db.json corrupted or unreadable. Checking backup...', parseErr);
@@ -600,6 +609,7 @@ export const db = {
         try {
           const rawBak = fs.readFileSync(backupFile, 'utf-8');
           cachedDb = JSON.parse(rawBak);
+          if (!cachedDb!.concerns) cachedDb!.concerns = [];
           console.info('[Database Store] Successfully recovered from db.json.bak!');
           return cachedDb!;
         } catch {}

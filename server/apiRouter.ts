@@ -3,6 +3,8 @@ import { authService } from './services/authService.ts';
 import { memberService } from './services/memberService.ts';
 import { bookingService } from './services/bookingService.ts';
 import { adminService } from './services/adminService.ts';
+import { concernService } from './services/concernService.ts';
+import { googleSheetsService } from './services/googleSheetsService.ts';
 import { verifySessionToken } from './auth/crypto.ts';
 import { db } from './db/store.ts';
 import type { UserRole, LeadSource } from './types.ts';
@@ -159,6 +161,23 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
         success: true,
         data: newLead,
         message: 'Your free trial request has been received. Our team will contact you to confirm the appointment.'
+      });
+      return true;
+    }
+
+    // Public Member Concern / Feedback Submission (Unlisted Route)
+    if (pathname === '/api/public/concerns' && method === 'POST') {
+      const body = await readJsonBody(req);
+      const forwarded = req.headers['x-forwarded-for'];
+      const clientIp = typeof forwarded === 'string'
+        ? forwarded.split(',')[0].trim()
+        : req.socket.remoteAddress || '127.0.0.1';
+
+      const result = await concernService.createConcern(body, clientIp);
+      sendJson(res, 201, {
+        success: true,
+        data: result,
+        message: 'Thank you for sharing your concern. Your feedback has been submitted to the Xing Fitness management team.'
       });
       return true;
     }
@@ -547,6 +566,98 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
       const body = await readJsonBody(req);
       const offer = adminService.saveOffer(body);
       sendJson(res, 200, { success: true, data: offer });
+      return true;
+    }
+
+    // ========================================================
+    // CONCERNS & FEEDBACK MANAGEMENT (ADMIN & STAFF)
+    // ========================================================
+
+    if (pathname === '/api/admin/concerns' && method === 'GET') {
+      requireRole(['STAFF', 'ADMIN']);
+      const category = urlObj.searchParams.get('category') || undefined;
+      const status = urlObj.searchParams.get('status') || undefined;
+      const search = urlObj.searchParams.get('search') || undefined;
+      const concerns = concernService.getConcerns({ category, status, search });
+      sendJson(res, 200, { success: true, data: concerns });
+      return true;
+    }
+
+    if (pathname === '/api/admin/concerns/stats' && method === 'GET') {
+      requireRole(['STAFF', 'ADMIN']);
+      const stats = concernService.getConcernStats();
+      sendJson(res, 200, { success: true, data: stats });
+      return true;
+    }
+
+    if (pathname === '/api/admin/concerns/sheets-status' && method === 'GET') {
+      requireRole(['STAFF', 'ADMIN']);
+      const config = googleSheetsService.getConfigInfo();
+      sendJson(res, 200, { success: true, data: config });
+      return true;
+    }
+
+    if (pathname === '/api/admin/concerns/sheets-test' && method === 'POST') {
+      requireRole(['STAFF', 'ADMIN']);
+      const testResult = await googleSheetsService.testConnection();
+      sendJson(res, 200, { success: testResult.ok, data: testResult });
+      return true;
+    }
+
+    if (pathname.startsWith('/api/admin/concerns/') && pathname.endsWith('/sync-sheets') && method === 'POST') {
+      requireRole(['STAFF', 'ADMIN']);
+      const parts = pathname.split('/');
+      const concernId = parts[parts.length - 2];
+      const updated = await concernService.retrySyncToSheets(concernId);
+      sendJson(res, 200, { success: true, data: updated, message: 'Successfully synced concern to Google Sheets.' });
+      return true;
+    }
+
+    if (pathname.startsWith('/api/admin/concerns/') && pathname.endsWith('/status') && method === 'PATCH') {
+      const user = requireRole(['STAFF', 'ADMIN']);
+      const parts = pathname.split('/');
+      const concernId = parts[parts.length - 2];
+      const body = await readJsonBody(req);
+      const updated = concernService.updateConcernStatus(
+        concernId,
+        body.status,
+        body.resolutionDetails,
+        user
+      );
+      sendJson(res, 200, { success: true, data: updated });
+      return true;
+    }
+
+    if (pathname.startsWith('/api/admin/concerns/') && pathname.endsWith('/assign') && method === 'PATCH') {
+      const user = requireRole(['STAFF', 'ADMIN']);
+      const parts = pathname.split('/');
+      const concernId = parts[parts.length - 2];
+      const body = await readJsonBody(req);
+      const updated = concernService.assignConcern(
+        concernId,
+        body.staffId,
+        body.staffName,
+        user
+      );
+      sendJson(res, 200, { success: true, data: updated });
+      return true;
+    }
+
+    if (pathname.startsWith('/api/admin/concerns/') && pathname.endsWith('/notes') && method === 'POST') {
+      const user = requireRole(['STAFF', 'ADMIN']);
+      const parts = pathname.split('/');
+      const concernId = parts[parts.length - 2];
+      const body = await readJsonBody(req);
+      const newNote = concernService.addInternalNote(concernId, body.note, user);
+      sendJson(res, 201, { success: true, data: newNote });
+      return true;
+    }
+
+    if (pathname.startsWith('/api/admin/concerns/') && method === 'GET') {
+      requireRole(['STAFF', 'ADMIN']);
+      const concernId = pathname.replace('/api/admin/concerns/', '');
+      const concern = concernService.getConcernById(concernId);
+      sendJson(res, 200, { success: true, data: concern });
       return true;
     }
 

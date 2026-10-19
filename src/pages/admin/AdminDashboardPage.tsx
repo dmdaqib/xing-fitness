@@ -9,6 +9,7 @@ import {
   Gift,
   CalendarCheck,
   UserCheck,
+  ShieldAlert,
   ArrowRight
 } from 'lucide-react';
 
@@ -111,6 +112,14 @@ export const AdminDashboardPage: React.FC = () => {
       icon: UserCheck,
       color: 'text-purple-400',
       link: '/admin/bookings'
+    },
+    {
+      title: 'Member Concerns',
+      value: stats?.openConcerns || 0,
+      subtext: 'Open QR feedback & issues',
+      icon: ShieldAlert,
+      color: 'text-rose-400',
+      link: '/admin/concerns'
     }
   ];
 
